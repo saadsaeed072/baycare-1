@@ -130,6 +130,10 @@ def contact():
     
     return render_template('contact.html')
 
+@app.route('/help')
+def help_center():
+    return render_template('help.html')
+
 @app.route('/how-it-works')
 def how_it_works():
     return render_template('how_it_works.html')
