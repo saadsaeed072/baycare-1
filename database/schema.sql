@@ -268,6 +268,20 @@ CREATE TABLE settings (
     description VARCHAR(255)
 );
 
+-- Contact messages from visitors
+CREATE TABLE contact_messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phone VARCHAR(20),
+    subject VARCHAR(100) NOT NULL,
+    message TEXT NOT NULL,
+    is_read BOOLEAN DEFAULT FALSE,
+    admin_reply TEXT,
+    replied_at TIMESTAMP NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Insert default settings
 INSERT INTO
     settings (
@@ -335,3 +349,7 @@ CREATE INDEX idx_availability_babysitter ON availability (babysitter_id);
 CREATE INDEX idx_notifications_user ON notifications (user_id);
 
 CREATE INDEX idx_transactions_user ON transactions (user_id);
+
+CREATE INDEX idx_contact_messages_email ON contact_messages (email);
+
+CREATE INDEX idx_contact_messages_read ON contact_messages (is_read);

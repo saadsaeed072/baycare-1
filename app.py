@@ -104,6 +104,32 @@ def index():
 def about():
     return render_template('about.html')
 
+@app.route('/contact', methods=['GET', 'POST'])
+def contact():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        email = request.form.get('email')
+        phone = request.form.get('phone', '')
+        subject = request.form.get('subject')
+        message = request.form.get('message')
+        
+        if not name or not email or not subject or not message:
+            flash('Please fill in all required fields.', 'danger')
+            return redirect(url_for('contact'))
+        
+        cur = get_db_connection()
+        cur.execute("""
+            INSERT INTO contact_messages (name, email, phone, subject, message)
+            VALUES (%s, %s, %s, %s, %s)
+        """, (name, email, phone, subject, message))
+        mysql.connection.commit()
+        cur.close()
+        
+        flash('Your message has been sent successfully! We will get back to you soon.', 'success')
+        return redirect(url_for('contact'))
+    
+    return render_template('contact.html')
+
 @app.route('/how-it-works')
 def how_it_works():
     return render_template('how_it_works.html')
